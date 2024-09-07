@@ -38,24 +38,19 @@ const parseArgs = (args) => {
   return options;
 }
 
-const isEmpty = (obj) => {
-  return Object.keys(obj).length === 0
-}
+const isEmpty = (obj) => Object.keys(obj).length === 0
 
 const main = () => {
   const options = parseArgs(process.argv)
-  // optionsに「hoge」などの出鱈目なものが入った時はエラー
-  if (isNaN(options.month) && !isEmpty(options)) {
-    console.error("-mオプションの引数には数字入れろ！")
+  // optionsが、数字でない(hogeとか)、1~12以外の数字の場合はエラーを出す
+  if (isNaN(options.month) && !isEmpty(options) || options.month < 1 || 12 < options.month) {
+    console.error("-mオプションの数字は1~12までやろが！(猿でも分か...)")
     return
   }
   const now = new Date();
   const year = now.getFullYear();
+  // ▼optionの指定がされてないときは現在の月を入れる
   const month = options.month || now.getMonth() + 1;
-  if (month < 1 || 12 < month) {
-    console.error("-mオプションの数字は1~12までやろが！(猿でも分か...)")
-    return
-  }
   print_calendar(year, month)
 }
 
